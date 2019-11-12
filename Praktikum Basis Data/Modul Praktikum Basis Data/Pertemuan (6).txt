@@ -1,0 +1,171 @@
+select fak as fakultas, count(*) as jumlah_mhs from mhs natural join fak group by fak order by fak asc limit 1;Enter password: ***********
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 19
+Server version: 10.3.17-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create user db identified by 'db';
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [(none)]> use rizki;
+Database changed
+
+
+MariaDB [rizki]> select * from mhs natural join fak;
++--------+-----+------+----------+-------------+--------------+--------+------------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs  | notelp       | gender | fak        |
++--------+-----+------+----------+-------------+--------------+--------+------------+
+|     86 |  12 |    1 | edi      | solo        | 0857688788   | l      | saintek    |
+|     86 |  13 |    3 | naila    | malang      | 085678567456 | p      | saintek    |
+|     84 |  14 |    2 | luki     | ponorogo    | 082576568798 | p      | psikologi  |
+|     86 |  15 |    4 | inna     | tulungagung | 08567856356  | p      | saintek    |
+|     83 |  16 |    5 | andy     | malang      | 08567856456  | l      | syariah    |
+|     82 |  17 |    6 | qohar    | jember      | 08567843256  | l      | humaniora  |
+|     85 |  18 |    7 | adam     | mojokerto   | 085678437956 | l      | kedokteran |
++--------+-----+------+----------+-------------+--------------+--------+------------+
+7 rows in set (0.000 sec)
+
+NOMOR 1
+
+MariaDB [rizki]> select fak as fakultas, count(*) as jumlah_mhs from mhs natural join fak group by fak order by fak asc limit 1;
++-----------+------------+
+| fakultas  | jumlah_mhs |
++-----------+------------+
+| humaniora |          1 |
++-----------+------------+
+1 row in set (0.000 sec)
+
+
+NOMOR 2
+
+MariaDB [rizki]> select nama_mhs, fak, alamat_mhs from mhs natural join fak where fak in (select fak from mhs natural join fak where nama_mhs ='edi') and alamat_mhs not in (select alamat_mhs from mhs natural join fak where nama_mhs='luki');
++----------+---------+-------------+
+| nama_mhs | fak     | alamat_mhs  |
++----------+---------+-------------+
+| edi      | saintek | solo        |
+| naila    | saintek | malang      |
+| inna     | saintek | tulungagung |
++----------+---------+-------------+
+3 rows in set (0.002 sec)
+
+
+NOMOR 3
+MariaDB [rizki]> create index index_alamat on mhs (alamat_mhs);
+Query OK, 0 rows affected (0.030 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> show index from mhs;
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name     | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| mhs   |          0 | PRIMARY      |            1 | nim         | A         |           6 |     NULL | NULL   |      | BTREE      |         |               |
+| mhs   |          0 | PRIMARY      |            2 | id_fak      | A         |           6 |     NULL | NULL   |      | BTREE      |         |               |
+| mhs   |          1 | index_alamat |            1 | alamat_mhs  | A         |           6 |     NULL | NULL   | YES  | BTREE      |         |               |
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+3 rows in set (0.003 sec)
+
+MariaDB [rizki]> insert into mhs values (19, 8, 'lingga', 'blitar', '0896059500', 86, 'l');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> select * from mhs;
++-----+------+----------+-------------+--------------+--------+--------+
+| nim | no   | nama_mhs | alamat_mhs  | notelp       | id_fak | gender |
++-----+------+----------+-------------+--------------+--------+--------+
+|  12 |    1 | edi      | solo        | 0857688788   |     86 | l      |
+|  13 |    3 | naila    | malang      | 085678567456 |     86 | p      |
+|  14 |    2 | luki     | ponorogo    | 082576568798 |     84 | p      |
+|  15 |    4 | inna     | tulungagung | 08567856356  |     86 | p      |
+|  16 |    5 | andy     | malang      | 08567856456  |     83 | l      |
+|  17 |    6 | qohar    | jember      | 08567843256  |     82 | l      |
+|  18 |    7 | adam     | mojokerto   | 085678437956 |     85 | l      |
+|  19 |    8 | lingga   | blitar      | 0896059500   |     86 | l      |
++-----+------+----------+-------------+--------------+--------+--------+
+8 rows in set (0.000 sec)
+
+
+
+MariaDB [rizki]> create unique index indexunikfak on fak (fak);
+Query OK, 0 rows affected (0.029 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> show index from fak;
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table | Non_unique | Key_name     | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| fak   |          0 | PRIMARY      |            1 | id_fak      | A         |           6 |     NULL | NULL   |      | BTREE      |         |               |
+| fak   |          0 | indexunikfak |            1 | fak         | A         |           6 |     NULL | NULL   | YES  | BTREE      |         |               |
++-------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> insert into mhs values (19, 8, 'lingga', 'blitar', '0896059500', 86, 'l');
+ERROR 1062 (23000): Duplicate entry '19-86' for key 'PRIMARY'
+MariaDB [rizki]> insert into mhs values (20, 9, 'yulia', 'blitar', '08960590', 86, 'p');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (20, 9, 'yulia', 'blitar', '08960590', 86, 'p');
+ERROR 1062 (23000): Duplicate entry '20-86' for key 'PRIMARY'
+
+
+NOMOR 4
+
+MariaDB [rizki]> alter table mhs add unique (nama_mhs);
+Query OK, 0 rows affected (0.030 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> insert into mhs values (20, 9, 'yulia', 'pasuruan', '08960590', 84, 'p');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (20, 9, 'yulia', 'pasuruan', '08960590', 84, 'p');
+ERROR 1062 (23000): Duplicate entry '20-84' for key 'PRIMARY'
+MariaDB [rizki]> insert into mhs values (20, 9, 'yulia', 'pasuruan', '08960590', 84, 'p');
+ERROR 1062 (23000): Duplicate entry '20-84' for key 'PRIMARY'
+
+
+NOMOR 5
+
+MariaDB [rizki]> create table tabel_identitas (nim int not null, nama_mhs varchar (20), alamat_mhs varchar (20), fak varchar (20));
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [rizki]> insert into tabel_identitas select nim, nama_mhs, alamat_mhs, fak from mhs natural join fak;
+Query OK, 9 rows affected (0.005 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> select * from tabel_identitas;
++-----+----------+-------------+------------+
+| nim | nama_mhs | alamat_mhs  | fak        |
++-----+----------+-------------+------------+
+|  12 | edi      | solo        | saintek    |
+|  13 | naila    | malang      | saintek    |
+|  14 | luki     | ponorogo    | psikologi  |
+|  15 | inna     | tulungagung | saintek    |
+|  16 | andy     | malang      | syariah    |
+|  17 | qohar    | jember      | humaniora  |
+|  18 | adam     | mojokerto   | kedokteran |
+|  19 | lingga   | blitar      | saintek    |
+|  20 | yulia    | pasuruan    | psikologi  |
++-----+----------+-------------+------------+
+9 rows in set (0.000 sec)
+
+
+NOMOR 6
+
+MariaDB [rizki]> select nim, trim(trailing '+'from nama_mhs), trim(leading 'a'from nama_mhs), alamat_mhs, fak from tabel_identitas;
++-----+---------------------------------+--------------------------------+-------------+------------+
+| nim | trim(trailing '+'from nama_mhs) | trim(leading 'a'from nama_mhs) | alamat_mhs  | fak        |
++-----+---------------------------------+--------------------------------+-------------+------------+
+|  12 | edi                             | edi                            | solo        | saintek    |
+|  13 | naila                           | naila                          | malang      | saintek    |
+|  14 | luki                            | luki                           | ponorogo    | psikologi  |
+|  15 | inna                            | inna                           | tulungagung | saintek    |
+|  16 | andy                            | ndy                            | malang      | syariah    |
+|  17 | qohar                           | qohar                          | jember      | humaniora  |
+|  18 | adam                            | dam                            | mojokerto   | kedokteran |
+|  19 | lingga                          | lingga                         | blitar      | saintek    |
+|  20 | yulia                           | yulia                          | pasuruan    | psikologi  |
++-----+---------------------------------+--------------------------------+-------------+------------+
+9 rows in set (0.000 sec)
+
+MariaDB [rizki]>

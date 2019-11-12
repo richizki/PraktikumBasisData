@@ -1,0 +1,246 @@
+Enter password: ***********
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 20
+Server version: 10.3.17-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create user RizkiFitria identified by "Blitar";
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [(none)]> create database RizkiF;
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [(none)]> use RizkiF;
+Database changed
+
+
+NOMOR 1
+
+MariaDB [RizkiF]> select
+    ->      10 -6 +5 *0 + 3/2;
++-------------------+
+| 10 -6 +5 *0 + 3/2 |
++-------------------+
+|            5.5000 |
++-------------------+
+1 row in set (0.000 sec)
+
+MariaDB [RizkiF]> select 5%2;
++------+
+| 5%2  |
++------+
+|    1 |
++------+
+1 row in set (0.000 sec)
+
+
+NOMOR 2
+MariaDB [RizkiF]> create table tabel53 (id_mhs int not null primary key, namaDepan_mhs varchar(20), namaBelakang_mhs varchar(20),mtgl_lhr_mhs date, status_mhs boolean, alamat_mhs text);
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [RizkiF]> desc tabel53;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| id_mhs           | int(11)     | NO   | PRI | NULL    |       |
+| namaDepan_mhs    | varchar(20) | YES  |     | NULL    |       |
+| namaBelakang_mhs | varchar(20) | YES  |     | NULL    |       |
+| mtgl_lhr_mhs     | date        | YES  |     | NULL    |       |
+| status_mhs       | tinyint(1)  | YES  |     | NULL    |       |
+| alamat_mhs       | text        | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+
+
+
+NOMOR 3
+MariaDB [RizkiF]> create table ident_mhs (id_mhs int not null primary key, namaDepan_mhs varchar(20), namaBelakang_mhs varchar(20),mtgl_lhr_mhs date, status_mhs boolean, alamat_mhs text);
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [RizkiF]> desc ident_mhs;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| id_mhs           | int(11)     | NO   | PRI | NULL    |       |
+| namaDepan_mhs    | varchar(20) | YES  |     | NULL    |       |
+| namaBelakang_mhs | varchar(20) | YES  |     | NULL    |       |
+| mtgl_lhr_mhs     | date        | YES  |     | NULL    |       |
+| status_mhs       | tinyint(1)  | YES  |     | NULL    |       |
+| alamat_mhs       | text        | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.004 sec)
+
+
+
+
+NOMOR 4
+MariaDB [RizkiF]> alter table ident_mhs drop column status_mhs;
+Query OK, 0 rows affected (0.043 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [RizkiF]> desc ident_mhs;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| id_mhs           | int(11)     | NO   | PRI | NULL    |       |
+| namaDepan_mhs    | varchar(20) | YES  |     | NULL    |       |
+| namaBelakang_mhs | varchar(20) | YES  |     | NULL    |       |
+| mtgl_lhr_mhs     | date        | YES  |     | NULL    |       |
+| alamat_mhs       | text        | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+5 rows in set (0.001 sec)
+
+
+
+
+NOMOR 5
+MariaDB [RizkiF]> alter table ident_mhs add namaOrtu varchar(20);
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [RizkiF]> desc ident_mhs;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| id_mhs           | int(11)     | NO   | PRI | NULL    |       |
+| namaDepan_mhs    | varchar(20) | YES  |     | NULL    |       |
+| namaBelakang_mhs | varchar(20) | YES  |     | NULL    |       |
+| mtgl_lhr_mhs     | date        | YES  |     | NULL    |       |
+| alamat_mhs       | text        | YES  |     | NULL    |       |
+| namaOrtu         | varchar(20) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.003 sec)
+
+
+
+
+
+
+NOMOR 6
+MariaDB [RizkiF]> alter table ident_mhs rename to pekerjaNIM;
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [RizkiF]> alter table pekerjaNIM change column namaBelakang_mhs LastName varchar(20) after namaDepan_mhs;
+Query OK, 0 rows affected (0.006 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [RizkiF]> desc pekerjaNIM;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| id_mhs        | int(11)     | NO   | PRI | NULL    |       |
+| namaDepan_mhs | varchar(20) | YES  |     | NULL    |       |
+| LastName      | varchar(20) | YES  |     | NULL    |       |
+| mtgl_lhr_mhs  | date        | YES  |     | NULL    |       |
+| alamat_mhs    | varchar(20) | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+5 rows in set (0.002 sec)
+
+
+
+
+
+NOMOR 7
+MariaDB [RizkiF]> alter table pekerjaNIM add constraint primary key (namaDepan_mhs);
+ERROR 1068 (42000): Multiple primary key defined
+
+MariaDB [RizkiF]> alter table pekerjaNIM modify alamat_mhs varchar(20);
+Query OK, 0 rows affected (0.059 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+
+
+
+NOMOR 8
+MariaDB [RizkiF]> create temporary table mahasiswa_temporary (id int, nama varchar(20), tgl_lahir int);
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [RizkiF]>  desc mahasiswa_temporary;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| id        | int(11)     | YES  |     | NULL    |       |
+| nama      | varchar(20) | YES  |     | NULL    |       |
+| tgl_lahir | int(11)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.002 sec)
+
+
+
+NOMOR 9
+MariaDB [RizkiF]> grant all on pekerjaNIM to RizkiFitri;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [RizkiF]> show grants for 'RizkiFitri'@'%';
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for RizkiFitri@%                                                                                                                                           |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'RizkiFitri'@'%' IDENTIFIED BY PASSWORD '*587BF5DAABC51AA602DD35AC405BDC9CB5346BFC'                                                         |
+| GRANT ALL PRIVILEGES ON `rizkif`.`pekerjanim` TO 'RizkiFitri'@'%'                                                                                                 |
+| GRANT INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER, DELETE HISTORY ON `rizki`.`pekerjanim` TO 'RizkiFitri'@'%' |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [RizkiF]>  revoke all on pekerjaNIM from RizkiFitri;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [RizkiF]> show grants for 'RizkiFitri'@'%';
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for RizkiFitri@%                                                                                                                                           |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'RizkiFitri'@'%' IDENTIFIED BY PASSWORD '*587BF5DAABC51AA602DD35AC405BDC9CB5346BFC'                                                         |
+| GRANT INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER, DELETE HISTORY ON `rizki`.`pekerjanim` TO 'RizkiFitri'@'%' |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [RizkiF]> grant all on pekerjaNIM to RizkiFitri;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [RizkiF]>  show grants for 'RizkiFitri'@'%';
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for RizkiFitri@%                                                                                                                                           |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'RizkiFitri'@'%' IDENTIFIED BY PASSWORD '*587BF5DAABC51AA602DD35AC405BDC9CB5346BFC'                                                         |
+| GRANT ALL PRIVILEGES ON `rizkif`.`pekerjanim` TO 'RizkiFitri'@'%'                                                                                                 |
+| GRANT INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER, DELETE HISTORY ON `rizki`.`pekerjanim` TO 'RizkiFitri'@'%' |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [RizkiF]> revoke select on pekerjaNIM from RizkiFitri;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [RizkiF]> show grants for 'RizkiFitri'@'%';
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for RizkiFitri@%                                                                                                                                            |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO 'RizkiFitri'@'%' IDENTIFIED BY PASSWORD '*587BF5DAABC51AA602DD35AC405BDC9CB5346BFC'                                                          |
+| GRANT INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER, DELETE HISTORY ON `rizkif`.`pekerjanim` TO 'RizkiFitri'@'%' |
+| GRANT INSERT, UPDATE, DELETE, CREATE, DROP, REFERENCES, INDEX, ALTER, CREATE VIEW, SHOW VIEW, TRIGGER, DELETE HISTORY ON `rizki`.`pekerjanim` TO 'RizkiFitri'@'%'  |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.000 sec)
+
+
+
+
+NOMOR 10
+MariaDB [RizkiF]>  create table NilaiBaru (id int not null PRIMARY KEY, namaMK varchar(20), nilaiMK int, sks int, Nama varchar (20), FOREIGN KEY (sks) REFERENCES pekerjaNIM(id_mhs));
+Query OK, 0 rows affected (0.022 sec)
+
+MariaDB [RizkiF]> desc NilaiBaru;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| id      | int(11)     | NO   | PRI | NULL    |       |
+| namaMK  | varchar(20) | YES  |     | NULL    |       |
+| nilaiMK | int(11)     | YES  |     | NULL    |       |
+| sks     | int(11)     | YES  | MUL | NULL    |       |
+| Nama    | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.004 sec)
+
+MariaDB [RizkiF]>

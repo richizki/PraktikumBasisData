@@ -1,0 +1,307 @@
+MariaDB [(none)]> create user rizkifitri identified by 'blitar';
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [(none)]> use rizki;
+Database changed
+MariaDB [rizki]> desc mhs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| nim        | int(11)     | NO   | PRI | NULL    |       |
+| no         | int(11)     | YES  |     | NULL    |       |
+| nama_mhs   | varchar(20) | YES  |     | NULL    |       |
+| alamat_mhs | varchar(20) | YES  |     | NULL    |       |
+| notelp     | mediumtext  | YES  |     | NULL    |       |
+| id_fak     | int(11)     | NO   | PRI | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+6 rows in set (0.002 sec)
+
+MariaDB [rizki]> desc fak;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id_fak | int(11)     | NO   | PRI | NULL    |       |
+| fak    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+MariaDB [rizki]> select * from mhs;\
++-----+------+----------+------------+--------------+--------+
+| nim | no   | nama_mhs | alamat_mhs | notelp       | id_fak |
++-----+------+----------+------------+--------------+--------+
+|  12 |    1 | edi      | solo       | 0857688788   |     86 |
+|  14 |    2 | luki     | ponorogo   | 082576568798 |     84 |
++-----+------+----------+------------+--------------+--------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from fak;
++--------+------------+
+| id_fak | fak        |
++--------+------------+
+|     81 | tarbiyah   |
+|     82 | humaniora  |
+|     83 | syariah    |
+|     84 | psikologi  |
+|     85 | kedokteran |
+|     86 | saintek    |
++--------+------------+
+6 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak;
++--------+-----+------+----------+------------+--------------+-----------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+------+----------+------------+--------------+-----------+
+|     86 |  12 |    1 | edi      | solo       | 0857688788   | saintek   |
+|     84 |  14 |    2 | luki     | ponorogo   | 082576568798 | psikologi |
++--------+-----+------+----------+------------+--------------+-----------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> alter table mhs add gender enum('l','p');
+Query OK, 0 rows affected (0.005 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> update mhs set gender ='p' where nim =14;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [rizki]> update mhs set gender ='l' where nim =12;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [rizki]> insert into mhs values (13, 3, 'naila', 'malang', '085678567456', 86, 'p');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (15, 4, 'inna', 'tulungagung', '08567856356', 86, 'p');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (16, 5, 'andy', 'malang', '08567856456', 83, 'l');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (17, 6, 'qohar', 'jember', '08567843256', 82, 'l');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into mhs values (18, 7, 'adam', 'mojokerto', '085678437956', 85, 'l');
+Query OK, 1 row affected (0.004 sec)
+
+
+NOMOR 1
+
+MariaDB [rizki]> select nim as nomor_identitas, nama_mhs as nama, alamat_mhs as alamat, fak as nama_fakultas from mhs natural join fak;
++-----------------+-------+-------------+---------------+
+| nomor_identitas | nama  | alamat      | nama_fakultas |
++-----------------+-------+-------------+---------------+
+|              17 | qohar | jember      | humaniora     |
+|              16 | andy  | malang      | syariah       |
+|              14 | luki  | ponorogo    | psikologi     |
+|              18 | adam  | mojokerto   | kedokteran    |
+|              12 | edi   | solo        | saintek       |
+|              13 | naila | malang      | saintek       |
+|              15 | inna  | tulungagung | saintek       |
++-----------------+-------+-------------+---------------+
+7 rows in set (0.000 sec)
+
+
+NOMOR 2
+
+MariaDB [rizki]> select nama_mhs from mhs natural join fak where fak = 'saintek' and gender = 'p';
++----------+
+| nama_mhs |
++----------+
+| naila    |
+| inna     |
++----------+
+2 rows in set (0.000 sec)
+
+
+NOMOR 
+
+MariaDB [rizki]> select nama_mhs from mhs natural join fak where fak = 'saintek' or gender = 'p';
++----------+
+| nama_mhs |
++----------+
+| edi      |
+| naila    |
+| inna     |
++----------+
+3 rows in set (0.000 sec)
+
+
+
+NOMOR 3
+MariaDB [rizki]> select * from mhs natural join fak where no between 3 and 5;
++--------+-----+------+----------+-------------+--------------+--------+---------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs  | notelp       | gender | fak     |
++--------+-----+------+----------+-------------+--------------+--------+---------+
+|     83 |  16 |    5 | andy     | malang      | 08567856456  | l      | syariah |
+|     86 |  13 |    3 | naila    | malang      | 085678567456 | p      | saintek |
+|     86 |  15 |    4 | inna     | tulungagung | 08567856356  | p      | saintek |
++--------+-----+------+----------+-------------+--------------+--------+---------+
+3 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak where no >= 3 and no <= 5;
++--------+-----+------+----------+-------------+--------------+--------+---------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs  | notelp       | gender | fak     |
++--------+-----+------+----------+-------------+--------------+--------+---------+
+|     83 |  16 |    5 | andy     | malang      | 08567856456  | l      | syariah |
+|     86 |  13 |    3 | naila    | malang      | 085678567456 | p      | saintek |
+|     86 |  15 |    4 | inna     | tulungagung | 08567856356  | p      | saintek |
++--------+-----+------+----------+-------------+--------------+--------+---------+
+3 rows in set (0.000 sec)
+MariaDB [rizki]> select * from mhs natural join fak where no not between 3 and 5;
++--------+-----+------+----------+------------+--------------+--------+------------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs | notelp       | gender | fak        |
++--------+-----+------+----------+------------+--------------+--------+------------+
+|     82 |  17 |    6 | qohar    | jember     | 08567843256  | l      | humaniora  |
+|     84 |  14 |    2 | luki     | ponorogo   | 082576568798 | p      | psikologi  |
+|     85 |  18 |    7 | adam     | mojokerto  | 085678437956 | l      | kedokteran |
+|     86 |  12 |    1 | edi      | solo       | 0857688788   | l      | saintek    |
++--------+-----+------+----------+------------+--------------+--------+------------+
+4 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak where no < 3 or no > 5;
++--------+-----+------+----------+------------+--------------+--------+------------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs | notelp       | gender | fak        |
++--------+-----+------+----------+------------+--------------+--------+------------+
+|     82 |  17 |    6 | qohar    | jember     | 08567843256  | l      | humaniora  |
+|     84 |  14 |    2 | luki     | ponorogo   | 082576568798 | p      | psikologi  |
+|     85 |  18 |    7 | adam     | mojokerto  | 085678437956 | l      | kedokteran |
+|     86 |  12 |    1 | edi      | solo       | 0857688788   | l      | saintek    |
++--------+-----+------+----------+------------+--------------+--------+------------+
+4 rows in set (0.000 sec)
+
+NOMOR 4
+
+MariaDB [rizki]> select * from mhs natural join fak where no in(2,3,5);
++--------+-----+------+----------+------------+--------------+--------+-----------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs | notelp       | gender | fak       |
++--------+-----+------+----------+------------+--------------+--------+-----------+
+|     83 |  16 |    5 | andy     | malang     | 08567856456  | l      | syariah   |
+|     84 |  14 |    2 | luki     | ponorogo   | 082576568798 | p      | psikologi |
+|     86 |  13 |    3 | naila    | malang     | 085678567456 | p      | saintek   |
++--------+-----+------+----------+------------+--------------+--------+-----------+
+3 rows in set (0.000 sec)
+
+
+NOMOR 5
+MariaDB [rizki]> select * from mhs natural join fak where nama_mhs like 'i%';
++--------+-----+------+----------+-------------+-------------+--------+---------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs  | notelp      | gender | fak     |
++--------+-----+------+----------+-------------+-------------+--------+---------+
+|     86 |  15 |    4 | inna     | tulungagung | 08567856356 | p      | saintek |
++--------+-----+------+----------+-------------+-------------+--------+---------+
+1 row in set (0.000 sec)
+
+
+NOMOR 6
+
+MariaDB [rizki]> select * from mhs natural join fak where nama_mhs like '__n%a';
++--------+-----+------+----------+-------------+-------------+--------+---------+
+| id_fak | nim | no   | nama_mhs | alamat_mhs  | notelp      | gender | fak     |
++--------+-----+------+----------+-------------+-------------+--------+---------+
+|     86 |  15 |    4 | inna     | tulungagung | 08567856356 | p      | saintek |
++--------+-----+------+----------+-------------+-------------+--------+---------+
+1 row in set (0.000 sec)
+
+
+NOMOR 7
+MariaDB [rizki]> select distinct id_fak from mhs;
++--------+
+| id_fak |
++--------+
+|     86 |
+|     84 |
+|     83 |
+|     82 |
+|     85 |
++--------+
+5 rows in set (0.000 sec)
+
+
+NOMOR 8
+
+MariaDB [rizki]> select * from mhs limit 3;
++-----+------+----------+------------+--------------+--------+--------+
+| nim | no   | nama_mhs | alamat_mhs | notelp       | id_fak | gender |
++-----+------+----------+------------+--------------+--------+--------+
+|  12 |    1 | edi      | solo       | 0857688788   |     86 | l      |
+|  13 |    3 | naila    | malang     | 085678567456 |     86 | p      |
+|  14 |    2 | luki     | ponorogo   | 082576568798 |     84 | p      |
++-----+------+----------+------------+--------------+--------+--------+
+3 rows in set (0.000 sec)
+
+
+
+NOMOR 9
+
+MariaDB [rizki]> create table organ_dalam (Nomor int not null primary key, Nama varchar(20));
+Query OK, 0 rows affected (0.018 sec)
+
+MariaDB [rizki]> create table organ_luar (Nomor int not null primary key, Nama varchar(20));
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [rizki]> desc organ_dalam;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Nomor | int(11)     | NO   | PRI | NULL    |       |
+| Nama  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.002 sec)
+
+MariaDB [rizki]> desc organ_luar;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| Nomor | int(11)     | NO   | PRI | NULL    |       |
+| Nama  | varchar(20) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+2 rows in set (0.004 sec)
+
+MariaDB [rizki]> insert into organ_dalam values(1, 'Jantung');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into organ_dalam values(2, 'ParuParu');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into organ_dalam values(3, 'Tenggorokan');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into organ_luar values(1, 'Hidung');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into organ_luar values(2, 'Mata');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [rizki]> insert into organ_luar values(3, 'Tenggorokan');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> select * from organ_dalam union select * from organ_luar;
++-------+-------------+
+| Nomor | Nama        |
++-------+-------------+
+|     1 | Jantung     |
+|     2 | ParuParu    |
+|     3 | Tenggorokan |
+|     1 | Hidung      |
+|     2 | Mata        |
++-------+-------------+
+5 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from organ_dalam except select * from organ_luar;
++-------+----------+
+| Nomor | Nama     |
++-------+----------+
+|     1 | Jantung  |
+|     2 | ParuParu |
++-------+----------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from organ_dalam intersect select * from organ_luar;
++-------+-------------+
+| Nomor | Nama        |
++-------+-------------+
+|     3 | Tenggorokan |
++-------+-------------+
+1 row in set (0.000 sec)
+
+MariaDB [rizki]>

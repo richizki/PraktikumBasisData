@@ -1,0 +1,250 @@
+MariaDB [(none)]> create user KelasSelasa identified by "blitar";
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> use rizki;
+Database changed
+MariaDB [rizki]> create table fak (id_fak int not null PRIMARY KEY, fak varchar (20));
+Query OK, 0 rows affected (0.021 sec)
+
+MariaDB [rizki]> insert into fak values (86, 'saintek');
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [rizki]> insert into fak values (81, 'tarbiyah');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into fak values (82, 'humaniora');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into fak values (83, 'syariah');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into fak values (84, 'psikologi');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> insert into fak values (85, 'kedokteran');
+Query OK, 1 row affected (0.004 sec)
+
+
+
+
+
+
+NOMOR 1
+
+MariaDB [rizki]> create table mhs (nim int not null, nama_mhs varchar (20), alamat_mhs varchar(20), id_fak int not null references fakultas, primary key (nim, id_fak));
+Query OK, 0 rows affected (0.016 sec)
+
+MariaDB [rizki]> show columns from fak;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id_fak | int(11)     | NO   | PRI | NULL    |       |
+| fak    | varchar(20) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.003 sec)
+
+MariaDB [rizki]> show columns from mhs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| nim        | int(11)     | NO   | PRI | NULL    |       |
+| nama_mhs   | varchar(20) | YES  |     | NULL    |       |
+| alamat_mhs | varchar(20) | YES  |     | NULL    |       |
+| id_fak     | int(11)     | NO   | PRI | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+4 rows in set (0.004 sec)
+
+MariaDB [rizki]> alter table mhs add notelp int after alamat_mhs;
+Query OK, 0 rows affected (0.045 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [rizki]> show columns from mahasiswa;
+ERROR 1146 (42S02): Table 'rizki.mahasiswa' doesn't exist
+MariaDB [rizki]> show columns from mhs;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| nim        | int(11)     | NO   | PRI | NULL    |       |
+| nama_mhs   | varchar(20) | YES  |     | NULL    |       |
+| alamat_mhs | varchar(20) | YES  |     | NULL    |       |
+| notelp     | mediumtext  | YES  |     | NULL    |       |
+| id_fak     | int(11)     | NO   | PRI | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+5 rows in set (0.003 sec)
+
+
+
+NOMOR 2
+
+MariaDB [rizki]> insert into mhs values (12, 'edi', 'malang', 0856453428, 86);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak;
++--------+-----+----------+------------+-----------+---------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp    | fak     |
++--------+-----+----------+------------+-----------+---------+
+|     86 |  12 | edi      | malang     | 856453428 | saintek |
++--------+-----+----------+------------+-----------+---------+
+1 row in set (0.000 sec)
+
+MariaDB [rizki]> insert into mhs values (13, 'sinta', 'jogja', '081334756567', 86);
+Query OK, 1 row affected (0.005 sec)
+
+MariaDB [rizki]> insert into mhs values (14, 'luki', 'ponorogo', '082576568798', 84);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [rizki]> select * from mhs;
++-----+----------+------------+--------------+--------+
+| nim | nama_mhs | alamat_mhs | notelp       | id_fak |
++-----+----------+------------+--------------+--------+
+|  12 | edi      | malang     | 856453428    |     86 |
+|  13 | sinta    | jogja      | 081334756567 |     86 |
+|  14 | luki     | ponorogo   | 082576568798 |     84 |
++-----+----------+------------+--------------+--------+
+3 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from fak;
++--------+------------+
+| id_fak | fak        |
++--------+------------+
+|     81 | tarbiyah   |
+|     82 | humaniora  |
+|     83 | syariah    |
+|     84 | psikologi  |
+|     85 | kedokteran |
+|     86 | saintek    |
++--------+------------+
+6 rows in set (0.000 sec)
+
+
+
+NOMOR 3
+
+MariaDB [rizki]> select nim, alamat_mhs from mhs;
++-----+------------+
+| nim | alamat_mhs |
++-----+------------+
+|  12 | malang     |
+|  13 | jogja      |
+|  14 | ponorogo   |
++-----+------------+
+3 rows in set (0.000 sec)
+
+
+
+NOMOR 4
+
+MariaDB [rizki]> select * from mhs where nim =12;
++-----+----------+------------+-----------+--------+
+| nim | nama_mhs | alamat_mhs | notelp    | id_fak |
++-----+----------+------------+-----------+--------+
+|  12 | edi      | malang     | 856453428 |     86 |
++-----+----------+------------+-----------+--------+
+1 row in set (0.000 sec)
+
+
+
+NOMOR 5
+
+MariaDB [rizki]> select nim, nama_mhs, fak from mhs natural join fak;
++-----+----------+-----------+
+| nim | nama_mhs | fak       |
++-----+----------+-----------+
+|  12 | edi      | saintek   |
+|  13 | sinta    | saintek   |
+|  14 | luki     | psikologi |
++-----+----------+-----------+
+3 rows in set (0.000 sec)
+
+
+
+
+NOMOR 6
+
+MariaDB [rizki]> delete from mhs where nim =13;
+Query OK, 1 row affected (0.004 sec)
+
+
+
+NOMOR 7
+
+MariaDB [rizki]> update mhs set alamat_mhs = 'solo', notelp = '0857688788' where nim =12;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [rizki]> select * from mhs;
++-----+----------+------------+--------------+--------+
+| nim | nama_mhs | alamat_mhs | notelp       | id_fak |
++-----+----------+------------+--------------+--------+
+|  12 | edi      | solo       | 0857688788   |     86 |
+|  14 | luki     | ponorogo   | 082576568798 |     84 |
++-----+----------+------------+--------------+--------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak;
++--------+-----+----------+------------+--------------+-----------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+----------+------------+--------------+-----------+
+|     86 |  12 | edi      | solo       | 0857688788   | saintek   |
+|     84 |  14 | luki     | ponorogo   | 082576568798 | psikologi |
++--------+-----+----------+------------+--------------+-----------+
+2 rows in set (0.000 sec)
+
+
+NOMOR 8
+
+MariaDB [rizki]> select * from mhs natural join fak order by nim desc;
++--------+-----+----------+------------+--------------+-----------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+----------+------------+--------------+-----------+
+|     84 |  14 | luki     | ponorogo   | 082576568798 | psikologi |
+|     86 |  12 | edi      | solo       | 0857688788   | saintek   |
++--------+-----+----------+------------+--------------+-----------+
+2 rows in set (0.000 sec)
+
+MariaDB [rizki]> select * from mhs natural join fak order by nama_mhs asc;
++--------+-----+----------+------------+--------------+-----------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+----------+------------+--------------+-----------+
+|     86 |  12 | edi      | solo       | 0857688788   | saintek   |
+|     84 |  14 | luki     | ponorogo   | 082576568798 | psikologi |
++--------+-----+----------+------------+--------------+-----------+
+2 rows in set (0.000 sec)
+
+
+
+NOMOR 9
+MariaDB [rizki]> select * from mhs natural join fak;
++--------+-----+----------+------------+--------------+-----------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+----------+------------+--------------+-----------+
+|     86 |  12 | edi      | solo       | 0857688788   | saintek   |
+|     84 |  14 | luki     | ponorogo   | 082576568798 | psikologi |
++--------+-----+----------+------------+--------------+-----------+
+2 rows in set (0.000 sec)
+
+
+
+NOMOR 10
+
+MariaDB [rizki]> select * from mhs natural join fak where fak ='saintek';
++--------+-----+----------+------------+------------+---------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp     | fak     |
++--------+-----+----------+------------+------------+---------+
+|     86 |  12 | edi      | solo       | 0857688788 | saintek |
++--------+-----+----------+------------+------------+---------+
+1 row in set (0.000 sec)
+
+
+
+NOMOR 11
+
+MariaDB [rizki]> select * from mhs natural join fak where fak !='saintek';
++--------+-----+----------+------------+--------------+-----------+
+| id_fak | nim | nama_mhs | alamat_mhs | notelp       | fak       |
++--------+-----+----------+------------+--------------+-----------+
+|     84 |  14 | luki     | ponorogo   | 082576568798 | psikologi |
++--------+-----+----------+------------+--------------+-----------+
+1 row in set (0.000 sec)
+
+MariaDB [rizki]>
