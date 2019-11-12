@@ -21,7 +21,7 @@ public class Delete {
             Class.forName("org.mariadb.jdbc.Driver");
             konek = DriverManager.getConnection("jdbc:mariadb://localhost:3306/test", "root", "");
             s = konek.createStatement();
-            String sql = "DELETE FROM mhs WHERE NIM = 4";
+            String sql = "DELETE FROM tablename WHERE NIM = 4";
             PreparedStatement stat = konek.prepareStatement(sql);
             s.executeUpdate(sql);
             if (konek != null) {
